@@ -1,14 +1,283 @@
 <!DOCTYPE html>
-<html lang="em">
+<html lang="en">
 <head>
-	<title>Hello World!</title>
-	
-	<script src="validate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>a-developz</title>
+<meta name="description" content="a-developz builds web apps, tools and experiments.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ultra: #2b2bff;
+    --deep: #1717b8;
+    --paper: #f3f1ff;
+    --volt: #ffd21f;
+    --ink: #0d0d3d;
+    --display: "Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+    --body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ultra);
+    color: var(--paper);
+    font-family: var(--body);
+    font-size: 1.125rem;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--volt); outline-offset: 4px; }
+  .wrap { width: min(1100px, 100% - 3rem); margin-inline: auto; }
+
+  /* Header */
+  header { padding: 1.5rem 0; }
+  header .wrap { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .logo { font-family: var(--display); font-weight: 800; font-size: 1.25rem; text-decoration: none; }
+  nav { display: flex; gap: 1.75rem; }
+  nav a { text-decoration: none; font-weight: 600; }
+  nav a:hover { color: var(--volt); }
+
+  /* Hero: the one loud thing */
+  .hero { position: relative; height: min(68vh, 560px); min-height: 320px; }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: pan-y; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .tagline {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(1.4rem, 3.2vw, 2.25rem);
+    line-height: 1.2;
+    max-width: 26ch;
+    padding: 1rem 0 5rem;
+  }
+  .tagline b { font-weight: 800; color: var(--volt); }
+
+  /* Sections */
+  section { padding: 5rem 0; }
+  h2 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(2.25rem, 6vw, 4rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 2.5rem;
+  }
+  .light { background: var(--paper); color: var(--ink); }
+  .dark { background: var(--deep); }
+
+  /* What we make: a plain, wide list rather than a grid of cards */
+  .makes { list-style: none; padding: 0; border-top: 2px solid var(--ink); }
+  .makes li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    gap: 1rem 3rem;
+    padding: 1.75rem 0;
+    border-bottom: 2px solid var(--ink);
+    align-items: baseline;
+  }
+  .makes h3 { font-family: var(--display); font-weight: 800; font-size: clamp(1.5rem, 3vw, 2.2rem); line-height: 1.05; }
+  .makes p { max-width: 52ch; }
+
+  /* Projects: rows that flood with colour on hover or focus */
+  .projects { list-style: none; padding: 0; }
+  .projects a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 1.4rem 0.75rem;
+    margin-inline: -0.75rem;
+    border-bottom: 1px solid rgba(243, 241, 255, 0.35);
+    text-decoration: none;
+    transition: background-color .2s, color .2s, padding-left .2s;
+  }
+  .projects a:hover, .projects a:focus-visible { background: var(--volt); color: var(--ink); padding-left: 1.75rem; }
+  .projects strong { font-family: var(--display); font-weight: 800; font-size: clamp(1.5rem, 4vw, 2.6rem); line-height: 1.05; }
+  .projects span { text-align: right; max-width: 30ch; font-size: 1rem; }
+
+  /* Contact */
+  .contact { text-align: left; }
+  .contact a.big {
+    display: inline-block;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(1.75rem, 6.5vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.12em;
+    word-break: break-word;
+  }
+  .contact a.big:hover { color: var(--ultra); background: var(--volt); text-decoration: none; }
+  .contact p { margin-top: 1.5rem; }
+  footer { padding: 2rem 0 3rem; font-size: 0.95rem; }
+
+  @media (max-width: 680px) {
+    nav { gap: 1.1rem; }
+    .makes li { grid-template-columns: 1fr; }
+    .projects a { flex-direction: column; gap: 0.25rem; }
+    .projects span { text-align: left; }
+  }
+</style>
 </head>
 <body>
-	<p>This is my first web page. </p>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top">a-developz</a>
+    <nav aria-label="Main">
+      <a href="#make">What we make</a>
+      <a href="#work">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <div class="hero">
+      <h1 class="sr">a-developz</h1>
+      <canvas id="hero" aria-hidden="true"></canvas>
+    </div>
+    <!-- EDIT: your one-line pitch -->
+    <p class="tagline">We build web apps, tools and <b>experiments</b> that are fun to use.</p>
+  </div>
+
+  <section id="make" class="light">
+    <div class="wrap">
+      <h2>What we make</h2>
+      <!-- EDIT: replace with what you really do -->
+      <ul class="makes">
+        <li><h3>Web apps</h3><p>Fast, accessible sites and apps, from a first prototype to a launch you can share.</p></li>
+        <li><h3>Developer tools</h3><p>Small utilities that remove a repetitive step from your day.</p></li>
+        <li><h3>Experiments</h3><p>Games, visualizations and odd ideas we build to learn something new.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="work" class="dark">
+    <div class="wrap">
+      <h2>Projects</h2>
+      <!-- EDIT: swap in real project names, descriptions and links -->
+      <ul class="projects">
+        <li><a href="#"><strong>Project One</strong><span>A short line about what it does</span></a></li>
+        <li><a href="#"><strong>Project Two</strong><span>A short line about what it does</span></a></li>
+        <li><a href="#"><strong>Project Three</strong><span>A short line about what it does</span></a></li>
+        <li><a href="https://github.com/a-developz"><strong>All code on GitHub</strong><span>Browse every repo</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <h2>Say hello</h2>
+      <!-- EDIT: add your real email or link -->
+      <a class="big" href="https://github.com/a-developz">github.com/a-developz</a>
+      <p>Open an issue or send a message. We read everything.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="dark">
+  <div class="wrap">© <span id="yr"></span> a-developz</div>
+</footer>
+
+<script>
+(function () {
+  document.getElementById("yr").textContent = new Date().getFullYear();
+
+  var canvas = document.getElementById("hero");
+  var ctx = canvas.getContext("2d");
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var W, H, parts = [], mouse = { x: -9999, y: -9999 }, raf = null, dot = 3;
+
+  function build() {
+    var r = canvas.getBoundingClientRect();
+    W = r.width; H = r.height;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+
+    // Draw the word offscreen, then turn its pixels into particles.
+    var off = document.createElement("canvas");
+    off.width = W; off.height = H;
+    var o = off.getContext("2d");
+    var family = getComputedStyle(document.body).getPropertyValue("--display");
+    var size = 100;
+    o.font = "800 " + size + "px " + family;
+    var w = o.measureText("a-developz").width;
+    size = Math.min(size * (W * 0.98) / w, H * 0.85);
+    o.font = "800 " + size + "px " + family;
+    o.textBaseline = "alphabetic";
+    o.textAlign = "left";
+    var tw = o.measureText("a-developz").width;
+    o.fillText("a-developz", (W - tw) / 2, H * 0.5 + size * 0.34);
+
+    var data = o.getImageData(0, 0, W, H).data;
+    var gap = Math.max(4, Math.round(size / 34));
+    dot = Math.max(2.5, gap * 0.78);
+    parts = [];
+    for (var y = 0; y < H; y += gap) {
+      for (var x = 0; x < W; x += gap) {
+        if (data[(Math.floor(y) * Math.floor(W) + Math.floor(x)) * 4 + 3] > 128) {
+          parts.push({ x: x, y: y, ox: x, oy: y, vx: 0, vy: 0, hot: Math.random() < 0.12 });
+        }
+      }
+    }
+  }
+
+  function draw() {
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    var R = 110, moving = false;
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      if (!reduce) {
+        var dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
+        if (d2 < R * R) {
+          var d = Math.sqrt(d2) || 1, f = (R - d) / R;
+          p.vx += (dx / d) * f * 6;
+          p.vy += (dy / d) * f * 6;
+        }
+        p.vx += (p.ox - p.x) * 0.06; p.vy += (p.oy - p.y) * 0.06;
+        p.vx *= 0.82; p.vy *= 0.82;
+        p.x += p.vx; p.y += p.vy;
+        if (Math.abs(p.vx) + Math.abs(p.vy) > 0.05) moving = true;
+      }
+      ctx.fillStyle = p.hot ? "#f3f1ff" : "#ffd21f";
+      ctx.fillRect(p.x - dot / 2, p.y - dot / 2, dot, dot);
+    }
+    raf = (moving || mouse.x > -9000) && !reduce ? requestAnimationFrame(draw) : null;
+  }
+
+  function kick() { if (!raf) raf = requestAnimationFrame(draw); }
+
+  function move(e) {
+    var r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+    kick();
+  }
+  canvas.addEventListener("pointermove", move);
+  canvas.addEventListener("pointerdown", move);
+  canvas.addEventListener("pointerleave", function () { mouse.x = mouse.y = -9999; kick(); });
+
+  var t;
+  window.addEventListener("resize", function () {
+    clearTimeout(t);
+    t = setTimeout(function () { build(); kick(); }, 150);
+  });
+
+  function start() { build(); kick(); }
+  if (document.fonts && document.fonts.load) {
+    document.fonts.load("800 100px 'Bricolage Grotesque'").then(start, start);
+  } else { start(); }
+})();
+</script>
 </body>
 </html>
+
 
 
 

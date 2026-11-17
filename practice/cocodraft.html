@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candy Crush Clone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+        .grid {
+            width: 560px;
+            height: 560px;
+            display: flex;
+            flex-wrap: wrap;
+            background-color: #bbada0;
+            padding: 5px;
+            border-radius: 10px;
+        }
+        .grid div {
+            height: 60px;
+            width: 60px;
+            margin: 5px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            cursor: grab;
+            border: 2px solid transparent;
+        }
+        .grid div:active {
+            cursor: grabbing;
+        }
+        #score {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Candy Crush Clone</h1>
+    <div id="score">Score: 0</div>
+    <div class="grid"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const grid = document.querySelector('.grid');
+            const scoreDisplay = document.getElementById('score');
+            const width = 8;
+            const squares = [];
+            let score = 0;
+
+            // REPLACE THESE URLs WITH ACTUAL CANDY IMAGE LINKS
+            const candyColors = [
+                'url("https://raw.githubusercontent.com/arpit456jain/Amazing-Js-Projects/master/Candy%20Crush/utils/red-candy.png")',
+                'url("https://raw.githubusercontent.com/arpit456jain/Amazing-Js-Projects/master/Candy%20Crush/utils/blue-candy.png")',
+                'url("https://raw.githubusercontent.com/arpit456jain/Amazing-Js-Projects/master/Candy%20Crush/utils/green-candy.png")',
+                'url("https://raw.githubusercontent.com/arpit456jain/Amazing-Js-Projects/master/Candy%20Crush/utils/yellow-candy.png")',
+                'url("https://raw.githubusercontent.com/arpit456jain/Amazing-Js-Projects/master/Candy%20Crush/utils/orange-candy.png")',
+                'url("https://raw.githubusercontent.com/arpit456jain/Amazing-Js-Projects/master/Candy%20Crush/utils/purple-candy.png")'
+            ];
+
+            // Create Board
+            function createBoard() {
+                for (let i = 0; i < width * width; i++) {
+                    const square = document.createElement('div');
+                    square.setAttribute('draggable', true);
+                    square.setAttribute('id', i);
+                    let randomColor = Math.floor(Math.random() * candyColors.length);
+                    square.style.backgroundImage = candyColors[randomColor];
+                    grid.appendChild(square);
+                    squares.push(square);
+                }
+            }
+            createBoard();
+
+            // Dragging the Candy
+            let colorBeingDragged;
+            let colorBeingReplaced;
+            let squareIdBeingDragged;
+            let squareIdBeingReplaced;
+
+            squares.forEach(square => square.addEventListener('dragstart', dragStart));
+            squares.forEach(square => square.addEventListener('dragend', dragEnd));
+            squares.forEach(square => square.addEventListener('dragover', dragOver));
+            squares.forEach(square => square.addEventListener('dragenter', dragEnter));
+            squares.forEach(square => square.addEventListener('drageleave', dragLeave));
+            squares.forEach(square => square.addEventListener('drop', dragDrop));
+
+            function dragStart() {
+                colorBeingDragged = this.style.backgroundImage;
+                squareIdBeingDragged = parseInt(this.id);
+            }
+
+            function dragOver(e) {
+                e.preventDefault();
+            }
+
+            function dragEnter(e) {
+                e.preventDefault();
+            }
+
+            function dragLeave() {
+                this.style.backgroundImage = "";
+            }
+
+            function dragDrop() {
+                colorBeingReplaced = this.style.backgroundImage;
+                squareIdBeingReplaced = parseInt(this.id);
+                this.style.backgroundImage = colorBeingDragged;
+                squares[squareIdBeingDragged].style.backgroundImage = colorBeingReplaced;
+            }
+
+            function dragEnd() {
+                let validMoves = [
+                    squareIdBeingDragged - 1,
+                    squareIdBeingDragged - width,
+                    squareIdBeingDragged + 1,
+                    squareIdBeingDragged + width
+                ];
+                let validMove = validMoves.includes(squareIdBeingReplaced);
+
+                if (squareIdBeingReplaced && validMove) {
+                    squareIdBeingReplaced = null;
+                } else if (squareIdBeingReplaced && !validMove) {
+                    squares[squareIdBeingReplaced].style.backgroundImage = colorBeingReplaced;
+                    squares[squareIdBeingDragged].style.backgroundImage = colorBeingDragged;
+                } else {
+                    squares[squareIdBeingDragged].style.backgroundImage = colorBeingDragged;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

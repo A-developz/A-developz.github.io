@@ -1,0 +1,18 @@
+
+body{
+background-color:RebeccaPurple;
+}
+    table, th, tr, td{
+        border: 2xp navy dashed;
+        border-collapse:collapee
+}
+.big{
+     font size: 2em;
+}
+
+.orange{
+    background-color: orange;
+}
+#six-seven{
+    font size:0.67;
+}
